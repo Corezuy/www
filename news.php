@@ -23,8 +23,8 @@ if ( !$_GET[stp] ) {
     $lmin = $pnum * $perpage;
     $lmax = $lmin + $perpage;
 
-    $result = $db->query( "SELECT ID,Date,Title FROM news ORDER BY ID DESC LIMIT $lmin, $perpage" );
-    while ( $news = $db->fetch( $result ) ) {
+    $result = $mysqli->query( "SELECT ID,Date,Title FROM news ORDER BY ID DESC LIMIT $lmin, $perpage" );
+    while ( $news = $mysqli->fetch( $result ) ) {
         echo "<tr>";
         echo "	<td>" . $news['Date'] . "</td>";
         echo "	<td>" . $news['Title'] . "</td>";
@@ -38,8 +38,8 @@ if ( !$_GET[stp] ) {
 		<td colspan="4" align="center">
 			<?php
     echo "<br>Page:<br>";
-    $result = $db->query( "SELECT count(*) FROM news" );
-    $temp = $db->fetch( $result );
+    $result = $mysqli->query( "SELECT count(*) FROM news" );
+    $temp = $mysqli->fetch( $result );
     $pcount = ceil( $temp[0] / $perpage );
     $pnumtemp = 0;
     while ( $pnumtemp < $pcount ) {
@@ -60,8 +60,8 @@ if ( !$_GET[stp] ) {
 } elseif ( $_GET['stp'] == "edit" ) {
     $editid = round( $_GET['id'] );
     if ( $editid ) {
-        $result = $db->query( "SELECT * FROM news WHERE ID='$editid'" );
-        $news = $db->fetch( $result );
+        $result = $mysqli->query( "SELECT * FROM news WHERE ID='$editid'" );
+        $news = $mysqli->fetch( $result );
         $showthis = "<input name=\"id\" type=\"hidden\" value=\"" . $news['ID'] . "\">";
         $submittext = "Edit";
     } else {
@@ -69,7 +69,7 @@ if ( !$_GET[stp] ) {
     } 
 
     ?>
-	<form action="admin_news.php?stp=edit2" method="post">
+	<form action="news.php?stp=edit2" method="post">
 	<table border="0" align="center">
 	  <tr>
 		<td>
@@ -96,21 +96,21 @@ if ( !$_GET[stp] ) {
     if ( !$_POST['date'] || !$_POST['title'] || !$_POST['body'] ) {
         echo "you forgot to fill out something";
     } else {
-        $ndate = htmlentities( $_POST['ndate'] );
-        $ntitle = htmlentities( $_POST['ntitle'] );
-        $nbody = htmlentities( $_POST['nbody'] );
+        $date = htmlentities( $_POST['date'] );
+        $title = htmlentities( $_POST['title'] );
+        $body = htmlentities( $_POST['body'] );
         if ( $_POST['id'] ) {
             $edid = $_POST['id'];
-            $db->query( "UPDATE news SET Date=\"$date\",Title=\"$title\",Body=\"$body\" WHERE ID='$edid'" );
+            $mysqli->query( "UPDATE news SET Date=\"$date\",Title=\"$title\",Body=\"$body\" WHERE ID='$edid'" );
             echo "You successfully updated this news item.";
         } else {
-            $db->query( "INSERT INTO news (`Date`,`Title`,`Body`) VALUES (\"$date\",\"$title\",\"$body\")" );
+            $mysqli->query( "INSERT INTO news (`Date`,`Title`,`Body`) VALUES (\"$date\",\"$title\",\"$body\")" );
             echo "You successfully added this news item.";
         } 
     } 
 } elseif ( $_GET['stp'] == "delete" ) {
     $delid = round( $_GET['id'] );
-    $db->query( "DELETE FROM news WHERE ID='$delid'" );
+    $mysqli->query( "DELETE FROM news WHERE ID='$delid'" );
     echo "This news item has been successfully deleted.";
 } 
 require 'includes/footer.php';
