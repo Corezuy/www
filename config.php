@@ -3,7 +3,7 @@
 //settings
 $DB_HOST 			= 'localhost';
 $DB_USER		= 'root';
-$DB_PASS		= '';
+$DB_PASS		= 'qeASxvLUDE';
 $DB_NAME			= 'db';
 
 //open mysql connection
