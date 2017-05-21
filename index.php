@@ -9,7 +9,7 @@ require"header.php";
 					
 $newlim = $SETTINGS['Number_of_News_Items'];
 $newsformat = html_entity_decode( $SETTINGS['News_Template'] );
-$result = $db->query( "SELECT * FROM news ORDER BY ID DESC LIMIT $newlim" );
+$result = $mysqli->query( "SELECT * FROM news ORDER BY ID DESC LIMIT $newlim" );
 
 while ( $news = $db->fetch( $result ) ) {
     $newdisplay = str_replace( "[date]", $news['Date'], $newsformat );
@@ -17,7 +17,7 @@ while ( $news = $db->fetch( $result ) ) {
     $newdisplay = str_replace( "[body]", html_entity_decode( $news['Body'] ), $newdisplay );
     echo $newdisplay;
 } 
-
+$mysqli->close();
 ?>
 
 <hr>
